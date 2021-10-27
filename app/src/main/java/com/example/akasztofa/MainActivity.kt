@@ -1,5 +1,6 @@
 package com.example.akasztofa
 
+import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private val words = arrayOf("teszt", "alma", "asztal", "eger", "table", "enemy", "cringe", "based", "sigma", "beta", "intel") //11 elem
     private lateinit var choosenWordArr : CharArray
     private val correctLetters : MutableList<Char> = mutableListOf()
+    private var mistakes = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,11 +50,30 @@ class MainActivity : AppCompatActivity() {
         }
 
         guessBtn.setOnClickListener {
-            guessTaken(lettersView.text.single())
+            if (!guessTaken(lettersView.text.single())) {
+                mistakes++
+            }
+            when(mistakes) {
+                0 -> hangManImg.setImageResource(R.drawable.akasztofa0)
+                1 -> hangManImg.setImageResource(R.drawable.akasztofa1)
+                2 -> hangManImg.setImageResource(R.drawable.akasztofa2)
+                3 -> hangManImg.setImageResource(R.drawable.akasztofa3)
+                4 -> hangManImg.setImageResource(R.drawable.akasztofa4)
+                5 -> hangManImg.setImageResource(R.drawable.akasztofa5)
+                6 -> hangManImg.setImageResource(R.drawable.akasztofa6)
+                7 -> hangManImg.setImageResource(R.drawable.akasztofa7)
+                8 -> hangManImg.setImageResource(R.drawable.akasztofa8)
+                9 -> hangManImg.setImageResource(R.drawable.akasztofa9)
+                10 -> hangManImg.setImageResource(R.drawable.akasztofa10)
+                11 -> hangManImg.setImageResource(R.drawable.akasztofa11)
+                12 -> hangManImg.setImageResource(R.drawable.akasztofa12)
+                13 -> hangManImg.setImageResource(R.drawable.akasztofa13)
+            }
         }
     }
 
-    private fun guessTaken(guessedChar: Char) {
+    private fun guessTaken(guessedChar: Char) : Boolean {
+        var isCorrect = false
         word.text = ""
         for(c in choosenWordArr) {
             if (correctLetters.contains(c)) {
@@ -61,10 +82,13 @@ class MainActivity : AppCompatActivity() {
             else if (c == guessedChar) {
                 word.append("$guessedChar ")
                 correctLetters.add(guessedChar)
+                isCorrect = true
             } else {
                 word.append("_ ")
             }
         }
+
+        return isCorrect
     }
 
     private fun init() {
@@ -79,6 +103,7 @@ class MainActivity : AppCompatActivity() {
         lettersView.append(abc[0].toString())
 
         choosenWordArr = words[rnd.nextInt(11)].toCharArray()
+
         for(c in choosenWordArr) {
             word.append("_ ")
         }
