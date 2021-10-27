@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
@@ -15,11 +16,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var guessBtn : Button
     private lateinit var hangManImg: ImageView
     private lateinit var word: TextView
+    private lateinit var gameCompleteAlert : AlertDialog.Builder
     private lateinit var rnd: Random
     private val abc = "abcdefghijklmnopqrstuvwxyz".toCharArray() //26 elem
     private val words = arrayOf("teszt", "alma", "asztal", "eger", "table", "enemy", "cringe", "based", "sigma", "beta", "intel") //11 elem
     private lateinit var choosenWordArr : CharArray
-    private val correctLetters : MutableList<Char> = mutableListOf()
+    private var correctLetters : MutableList<Char> = mutableListOf()
     private var mistakes = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +55,7 @@ class MainActivity : AppCompatActivity() {
             if (!guessTaken(lettersView.text.single())) {
                 mistakes++
             }
+
             when(mistakes) {
                 0 -> hangManImg.setImageResource(R.drawable.akasztofa0)
                 1 -> hangManImg.setImageResource(R.drawable.akasztofa1)
@@ -69,6 +72,34 @@ class MainActivity : AppCompatActivity() {
                 12 -> hangManImg.setImageResource(R.drawable.akasztofa12)
                 13 -> hangManImg.setImageResource(R.drawable.akasztofa13)
             }
+
+            if (!word.text.contains("_") || mistakes == 13) {
+                gameComplete()
+            }
+        }
+    }
+
+    private fun reset() {
+        mistakes = 0
+        hangManImg.setImageResource(R.drawable.akasztofa0)
+        lettersView.text = ""
+        lettersView.append(abc[0].toString())
+
+        correctLetters = mutableListOf()
+        word.text = ""
+        choosenWordArr = words[rnd.nextInt(11)].toCharArray()
+        for(c in choosenWordArr) {
+            word.append("_ ")
+        }
+    }
+    
+    private fun gameComplete() {
+        if (mistakes == 13) {
+            gameCompleteAlert.setTitle("Ön vesztett")
+            gameCompleteAlert.show()
+        } else {
+            gameCompleteAlert.setTitle("Ön nyert")
+            gameCompleteAlert.show()
         }
     }
 
@@ -98,6 +129,10 @@ class MainActivity : AppCompatActivity() {
         guessBtn = findViewById(R.id.guessBtn)
         hangManImg = findViewById(R.id.hangManImg)
         word = findViewById(R.id.word)
+        gameCompleteAlert = AlertDialog.Builder(this)
+            .setMessage("Szeretne új játékot kezdeni?")
+            .setPositiveButton("Igen") { _, _-> reset()}
+            .setNegativeButton("Nem") {_, _-> finish()}
         rnd = Random
 
         lettersView.append(abc[0].toString())
