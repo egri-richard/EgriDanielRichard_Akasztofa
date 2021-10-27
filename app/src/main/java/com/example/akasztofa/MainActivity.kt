@@ -130,6 +130,7 @@ class MainActivity : AppCompatActivity() {
         hangManImg = findViewById(R.id.hangManImg)
         word = findViewById(R.id.word)
         gameCompleteAlert = AlertDialog.Builder(this)
+            .setCancelable(false)
             .setMessage("Szeretne új játékot kezdeni?")
             .setPositiveButton("Igen") { _, _-> reset()}
             .setNegativeButton("Nem") {_, _-> finish()}
