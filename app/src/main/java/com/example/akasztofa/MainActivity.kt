@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import kotlin.random.Random
 
@@ -19,10 +20,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var gameCompleteAlert : AlertDialog.Builder
     private lateinit var rnd: Random
     private val abc = "abcdefghijklmnopqrstuvwxyz".toCharArray() //26 elem
-    private val words = arrayOf("teszt", "alma", "asztal", "eger", "table", "enemy", "cringe", "based", "sigma", "beta", "intel") //11 elem
+    private val words = arrayOf("test", "apple", "table", "mouse", "rule", "enemy", "cry", "base", "sour", "band", "intel") //11 elem
     private lateinit var choosenWordArr : CharArray
     private var correctLetters : MutableList<Char> = mutableListOf()
     private var mistakes = 0
+    private var wasGuessed : MutableList<Char> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +54,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         guessBtn.setOnClickListener {
-            if (!guessTaken(lettersView.text.single())) {
-                mistakes++
+            val c = lettersView.text.single()
+
+            if (wasGuessed.contains(c)) {
+                Toast.makeText(this, "Ezt már próbáltad", Toast.LENGTH_SHORT).show()
+            } else {
+                wasGuessed.add(c)
+
+                if (!guessTaken(c)) {
+                    mistakes++
+                    Toast.makeText(this, "Rossz tipp", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Jó tipp", Toast.LENGTH_SHORT).show()
+                }
             }
 
             when(mistakes) {
