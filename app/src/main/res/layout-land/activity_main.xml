@@ -10,9 +10,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_centerInParent="true"
-        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/hangManImg"
         android:id="@+id/guessRow">
 
             <android.widget.Button
@@ -49,8 +49,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/word"
-        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@+id/hangManImg"
+        android:layout_centerInParent="true"
         android:text="Tipp"
         android:id="@+id/guessBtn"/>
 

@@ -99,6 +99,7 @@ class MainActivity : AppCompatActivity() {
         lettersView.append(abc[0].toString())
 
         correctLetters = mutableListOf()
+        wasGuessed = mutableListOf()
         word.text = ""
         choosenWordArr = words[rnd.nextInt(11)].toCharArray()
         for(c in choosenWordArr) {
@@ -155,6 +156,52 @@ class MainActivity : AppCompatActivity() {
 
         for(c in choosenWordArr) {
             word.append("_ ")
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putChar("currentChar", lettersView.text.single())
+        outState.putCharArray("choosenWordArr", choosenWordArr)
+        outState.putCharArray("correctLetters", correctLetters.toCharArray())
+        outState.putInt("mistakes", mistakes)
+        outState.putCharArray("wasGuessed", wasGuessed.toCharArray())
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        choosenWordArr = savedInstanceState.getCharArray("choosenWordArr")!!
+        correctLetters = savedInstanceState.getCharArray("correctLetters")!!.toMutableList()
+        mistakes = savedInstanceState.getInt("mistakes")
+        wasGuessed = savedInstanceState.getCharArray("wasGuessed")!!.toMutableList()
+        lettersView.text = savedInstanceState.getChar("currentChar").toString()
+
+        word.text = ""
+        for(c in choosenWordArr) {
+            if (correctLetters.contains(c)) {
+                word.append("$c ")
+            } else {
+                word.append("_ ")
+            }
+        }
+
+        when(mistakes) {
+            0 -> hangManImg.setImageResource(R.drawable.akasztofa0)
+            1 -> hangManImg.setImageResource(R.drawable.akasztofa1)
+            2 -> hangManImg.setImageResource(R.drawable.akasztofa2)
+            3 -> hangManImg.setImageResource(R.drawable.akasztofa3)
+            4 -> hangManImg.setImageResource(R.drawable.akasztofa4)
+            5 -> hangManImg.setImageResource(R.drawable.akasztofa5)
+            6 -> hangManImg.setImageResource(R.drawable.akasztofa6)
+            7 -> hangManImg.setImageResource(R.drawable.akasztofa7)
+            8 -> hangManImg.setImageResource(R.drawable.akasztofa8)
+            9 -> hangManImg.setImageResource(R.drawable.akasztofa9)
+            10 -> hangManImg.setImageResource(R.drawable.akasztofa10)
+            11 -> hangManImg.setImageResource(R.drawable.akasztofa11)
+            12 -> hangManImg.setImageResource(R.drawable.akasztofa12)
+            13 -> hangManImg.setImageResource(R.drawable.akasztofa13)
         }
     }
 }
